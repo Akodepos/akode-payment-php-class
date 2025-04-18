@@ -1,0 +1,45 @@
+<?php
+/**
+ *
+ *   AKÖde POS Alttantire Yazılım Çözümleri tarafından geliştirilmiştir.
+
+ *
+ * @author      Alttantire Yazılım Çözümleri <info@alttantire.com>
+ * @site        <https//alttantire.com/>
+ * @date        2022
+ *
+ */
+
+include "../src/Gateway.php";
+
+//### Sanal POS Üye İşyeri Ayarları
+/*
+ * apiUser: SMS ile iletilen ApiUser bilgisi
+ * clientId: SMS ile iletilen clientId bilgisi
+ * apiPass: SMS ile iletilen apiPass bilgisi
+ *
+ * Environment:
+ *
+ *  ** "LIVE" = "https://api.akodepos.com/api/Payment/"
+ *  ** "TEST" = "https://ent.akodepos.com/api/Payment/"
+ */
+
+$apiUser = "POS_ENT_Test_001"; // Api kullanıcı adınız
+$clientId = "1000000494"; // Api müşteri numaranız
+$apiPass = "POS_ENT_Test_001!*!*"; // Api şifreniz
+$environment = "https://ent.akodepos.com/api/Payment/";
+
+//### API Gateway
+$gateway = new Gateway($environment, $clientId, $apiUser, $apiPass);
+
+//### Sipariş Bilgileri
+$amount=14990; // Otorizasyondan tahsil edilcek tutar. 149 TL 90 Kuruş
+$orderId=""; // Sipariş numarası
+
+try {
+    $postAuth = $gateway->threeDPostAuth( $orderId, $amount );
+    echo "<pre>".print_r($postAuth,true)."</pre>";
+
+} catch (Exception $e) {
+    print_r($e);
+}
